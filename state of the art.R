@@ -71,3 +71,37 @@ model <- train(
 
 # Print model to console
 model
+
+# Creating smaller dataset
+set.seed(42)
+rows <- sample(nrow(ok))
+shuffled_Kali <- bs_with_transparency[rows, ]
+split <- round(nrow(ok)*.99)
+train <- ok[1:split, ]
+test <- ok[(split+1):nrow(ok),]
+
+model <- train(
+  transparency_score ~. ,
+  tunLength = 3,
+  data = test,
+  na.action = na.exclude,
+  method = "ranger",
+  trControl = trainControl(
+    method = "cv" ,
+    number = 5, 
+    verboseIter =  TRUE
+  )
+)
+modRF <- train(transparency_score ~ ., 
+               data=train, 
+               na.action = na.exclude, 
+               method="ranger", 
+               trControl=trainControl(method="cv",number=5)
+)
+
+summary(warnings())
+memory.limit()
+
+modRF
+
+plot(modRF)
