@@ -1,6 +1,5 @@
 # install.packages("caret")
 library(caret)
-# ?createDataPartition
 
 # Loading in data 
 # install.packages("mlbench")
